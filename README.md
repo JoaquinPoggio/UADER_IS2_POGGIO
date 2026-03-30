@@ -1,130 +1,71 @@
-\# Ingeniería de Software II
+# Ingeniería de Software II
 
-
-
-\##  Propósito del repositorio
-
-
+## Propósito del repositorio
 
 Este repositorio contiene los trabajos prácticos desarrollados en Python para la materia Ingeniería de Software II.
 
+---
 
-
-\---
-
-
-
-\## Objetivos
-
-
+## Objetivos
 
 Aplicar principios de ingeniería de software en el desarrollo de programas.
 
+## Contenido del repositorio actualmente
 
+### Programas incluidos
 
-\## Contenido del repositorio actualmente
+- Primes → cálculo de números primos
 
+- Factorial → cálculo de factorial con soporte de rangos
 
+- Factorial_OOP → implementación orientada a objetos
 
-\### Programas incluidos
+- Collatz → cálculo de iteraciones y visualización gráfica
 
+---
 
+## Funcionalidades
 
-\* Primes → cálculo de números primos
+### 1. Primes.py
 
-\* Factorial → cálculo de factorial con soporte de rangos
+1. Cálculo de números primos
 
-\* Factorial\_OOP → implementación orientada a objetos
+2. Ejecución desde consola
 
-\* Collatz → cálculo de iteraciones y visualización gráfica
+### 2. Factorial.py y Factorial_OOP.py ((método run(min, max))
 
+1. Cálculo de factorial
 
+2. Soporte de rangos (ej: 4-8)
 
-\---
+3. Soporte de rangos abiertos (-10, 5-)
 
+### 3. Collatz
 
+1. Cálculo de iteraciones para números del 1 al 10000
 
-\##  Funcionalidades
+2. Generación de gráfico
 
+---
 
+## Tecnologías utilizadas
 
-\### 1. Primes.py
+- Python
 
+- Git
 
+- Matplotlib
 
-1\. Cálculo de números primos
+---
 
-2\. Ejecución desde consola
+![Logo](img/UADER.PNG)
 
-
-
-\### 2. Factorial.py y Factorial\_OOP.py ((método run(min, max))
-
-
-
-1\. Cálculo de factorial
-
-2\. Soporte de rangos (ej: 4-8)
-
-3\. Soporte de rangos abiertos (-10, 5-)
-
-
-
-\### 3. Collatz
-
-
-
-1\. Cálculo de iteraciones para números del 1 al 10000
-
-2\. Generación de gráfico
-
-
-
-\---
-
-
-
-\## Tecnologías utilizadas
-
-
-
-\* Python
-
-\* Git
-
-\* Matplotlib
-
-
-
-\---
-
-
-
-!\[logo](img/UADER.PNG)
-
-
-
-\---
-
-
-
-\## Referencia
-
-
+## Referencia
 
 https://www.python.org/
 
+---
 
+## Autor:
 
-\---
-
-
-
-\## Autor: 
-
-&#x20;
-
-* Joaquín Pablo Poggio
-
-
-
+- Joaquín Pablo Poggio
