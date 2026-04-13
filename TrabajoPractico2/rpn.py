@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Calculadora RPN con soporte de operaciones, funciones y memoria."""
 
-import sys
 import math
+import sys
 
 
 class RPNError(Exception):
