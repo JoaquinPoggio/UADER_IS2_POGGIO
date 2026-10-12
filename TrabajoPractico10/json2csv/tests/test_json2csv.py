@@ -132,6 +132,7 @@ def test_huge_nesting_gives_controlled_error() -> None:
     with pytest.raises(JsonFormatError):
         convert("[" * 100_000)
 
+
 # --- Línea de comandos ------------------------------------------------------
 
 
