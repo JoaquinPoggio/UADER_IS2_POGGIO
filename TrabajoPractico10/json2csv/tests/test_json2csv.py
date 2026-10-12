@@ -1,6 +1,7 @@
 """Pruebas unitarias de json2csv. Cada docstring enuncia la hipótesis probada."""
 
 import io
+import json
 import runpy
 import subprocess
 import sys
@@ -115,11 +116,21 @@ def test_empty_input_is_rejected(text: str) -> None:
         convert(text)
 
 
-def test_excessive_nesting_is_rejected() -> None:
-    """Hipótesis: un anidamiento excesivo no provoca un traceback sino un error."""
-    with pytest.raises(JsonFormatError, match="profundo"):
-        convert("[" * 100_000)
+def test_recursion_error_is_reported(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Hipótesis: si se agota la recursión al decodificar, se informa un error."""
 
+    def too_deep(text: str) -> object:
+        raise RecursionError
+
+    monkeypatch.setattr(json, "loads", too_deep)
+    with pytest.raises(JsonFormatError, match="profundo"):
+        convert("[]")
+
+
+def test_huge_nesting_gives_controlled_error() -> None:
+    """Hipótesis: 100000 niveles de anidamiento fallan con un error propio."""
+    with pytest.raises(JsonFormatError):
+        convert("[" * 100_000)
 
 # --- Línea de comandos ------------------------------------------------------
 
