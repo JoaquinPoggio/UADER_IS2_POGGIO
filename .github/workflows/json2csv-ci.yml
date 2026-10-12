@@ -1,0 +1,115 @@
+name: json2csv CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "TrabajoPractico10/json2csv/**"
+      - ".github/workflows/json2csv-ci.yml"
+  pull_request:
+    paths:
+      - "TrabajoPractico10/json2csv/**"
+      - ".github/workflows/json2csv-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: json2csv-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: TrabajoPractico10/json2csv
+
+jobs:
+  quality:
+    name: Calidad y seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: TrabajoPractico10/json2csv/requirements.txt
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Registrar VERSION y BUILD
+        run: echo "VERSION $(cat VERSION) - BUILD $(cat BUILD)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Ruff (PEP 8 y PEP 257)
+        run: ruff check .
+      - name: Black
+        run: black --check --diff .
+      - name: MyPy
+        run: mypy
+      - name: Pyright
+        run: pyright
+      - name: Bandit
+        run: bandit -c pyproject.toml -r src
+
+  tests:
+    name: Pytest (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: TrabajoPractico10/json2csv/requirements.txt
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Pytest con cobertura minima del 85 %
+        run: pytest
+
+  docs:
+    name: Documentacion (pdoc)
+    needs: [quality, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: TrabajoPractico10/json2csv/requirements.txt
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Generar documentacion
+        run: pdoc --docformat google --output-directory docs json2csv
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: TrabajoPractico10/json2csv/docs
+
+  deploy:
+    name: Publicar documentacion (GitHub Pages)
+    needs: docs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DOCS_DEPLOYMENT_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,12 @@
+# json2csv no tiene dependencias en tiempo de ejecucion (solo biblioteca estandar).
+# Herramientas de desarrollo, calidad, seguridad y documentacion:
+bandit==1.9.4
+black==26.10.0
+mypy==2.4.0
+pdoc==16.0.0
+pyright==1.1.414
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.10
+# El propio proyecto, en modo editable:
+-e .
