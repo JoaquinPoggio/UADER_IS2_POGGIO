@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "json2csv"
+dynamic = ["version"]
+description = "Conversor de JSON a CSV con estrategia de filtro (entrada/salida estándar)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Joaquin Pablo Poggio", email = "joaquinpoggio04@email.com" }]
+requires-python = ">=3.12"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+json2csv = "json2csv.json2csv:main"
+
+[tool.hatch.version]
+path = "src/json2csv/json2csv.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/json2csv"]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# E/W: PEP 8 (pycodestyle) - N: PEP 8 (nombres) - D: PEP 257 (docstrings)
+select = ["E", "W", "F", "I", "N", "D", "UP", "B", "C4", "SIM", "S", "BLE", "PT", "RUF"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S603"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+mypy_path = "src"
+explicit_package_bases = true
+
+[tool.pyright]
+include = ["src", "tests"]
+extraPaths = ["src"]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--cov=json2csv --cov-report=term-missing --cov-fail-under=85"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = ["if __name__ == .__main__.:"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
